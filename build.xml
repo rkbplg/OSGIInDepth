@@ -1,0 +1,32 @@
+<project name="Hello World" basedir="." default="run">
+<macrodef name="bundle-up">
+	<attribute name="name" />
+	
+	
+	<sequential>	
+		<mkdir dir="modules/@{name}/target" />
+		<mkdir dir="dist" />
+		<javac destdir="modules/@{name}/target"
+			srcdir="modules/@{name}/src/main/java" debug="true">
+		<classpath>
+			<fileset dir="dist" includes="*.jar" />
+			<!--<fileset dir="../lib" includes="*.jar" />-->
+			<fileset dir="${osgi.install.dir}/bin" includes="*.jar" />
+			<fileset dir="${osgi.install.dir}/bundle" includes="*.jar" />
+		</classpath>
+		</javac>
+		
+		<jar destfile="dist/@{name}.jar" basedir="modules/@{name}/target"
+			manifest="modules/@{name}/src/main/resources/META-INF/MANIFEST.MF"/>
+	</sequential>
+</macrodef>
+
+<target name="run">
+<property name="osgi.install.dir" value="D:/softwares/org.apache.felix.main.distribution-5.6.2-update1/felix-framework-5.6.2" />
+	<bundle-up name="helloworld" />
+	<bundle-up name="helloworld.client" />
+	<bundle-up name="helloworld.client2" />
+
+</target>
+
+</project>
